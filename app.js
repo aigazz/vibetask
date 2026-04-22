@@ -1,4 +1,4 @@
-const STORAGE_KEY = "minimal-kanban-tasks-v1";
+﻿const STORAGE_KEY = "minimal-kanban-tasks-v1";
 const VIEW_STORAGE_KEY = "minimal-kanban-view-v1";
 const TASK_FORM_SECTIONS_STORAGE_KEY = "minimal-kanban-task-form-sections-v1";
 const THEME_STORAGE_KEY = "minimal-kanban-theme-v1";
