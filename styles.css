@@ -103,7 +103,7 @@ body {
 
 body {
   margin: 0;
-  font-family: "Source Sans 3", "Avenir Next", "Gill Sans", sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color: var(--text);
   background: var(--bg-neutral);
 }
