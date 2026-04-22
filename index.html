@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minimal Kanban</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <div class="app-sticky-head">
+      <header class="app-header">
+        <h1>Aufgabenliste</h1>
+        <div class="app-actions-wrap">
+          <div class="settings-menu">
+            <button id="settingsToggleBtn" class="toolbar-icon-btn" type="button" aria-label="Einstellungen öffnen" aria-expanded="false" title="Einstellungen">
+              <svg class="toolbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="3.1"></circle>
+                <path d="M19.3 15a1 1 0 0 0 .2 1.1l.1.1a1.2 1.2 0 0 1 0 1.7l-1.1 1.1a1.2 1.2 0 0 1-1.7 0l-.1-.1a1 1 0 0 0-1.1-.2 1 1 0 0 0-.6.9V20a1.2 1.2 0 0 1-1.2 1.2h-1.6A1.2 1.2 0 0 1 11 20v-.1a1 1 0 0 0-.6-.9 1 1 0 0 0-1.1.2l-.1.1a1.2 1.2 0 0 1-1.7 0l-1.1-1.1a1.2 1.2 0 0 1 0-1.7l.1-.1a1 1 0 0 0 .2-1.1 1 1 0 0 0-.9-.6H4A1.2 1.2 0 0 1 2.8 13v-1.6A1.2 1.2 0 0 1 4 10.2h.1a1 1 0 0 0 .9-.6 1 1 0 0 0-.2-1.1l-.1-.1a1.2 1.2 0 0 1 0-1.7l1.1-1.1a1.2 1.2 0 0 1 1.7 0l.1.1a1 1 0 0 0 1.1.2 1 1 0 0 0 .6-.9V4A1.2 1.2 0 0 1 11.4 2.8H13A1.2 1.2 0 0 1 14.2 4v.1a1 1 0 0 0 .6.9 1 1 0 0 0 1.1-.2l.1-.1a1.2 1.2 0 0 1 1.7 0l1.1 1.1a1.2 1.2 0 0 1 0 1.7l-.1.1a1 1 0 0 0-.2 1.1 1 1 0 0 0 .9.6H20a1.2 1.2 0 0 1 1.2 1.2V13A1.2 1.2 0 0 1 20 14.2h-.1a1 1 0 0 0-.6.8z"></path>
+              </svg>
+            </button>
+            <div id="settingsMenuPanel" class="settings-menu-panel hidden">
+              <button id="themeToggle" class="theme-toggle-btn settings-item-btn" type="button" aria-label="Dark-Modus aktivieren" aria-pressed="false" title="Dark-Modus aktivieren">
+                <span id="themeToggleIcon" aria-hidden="true">☀</span>
+                <span id="themeToggleLabel">Dark</span>
+              </button>
+              <button id="exportBtn" class="settings-item-btn" type="button">Export</button>
+              <button id="importBtn" class="settings-item-btn" type="button">Import</button>
+              <button id="wipeAllBtn" class="settings-item-btn danger-btn" type="button">Alles löschen</button>
+            </div>
+          </div>
+          <button id="newTaskBtn" class="primary-btn" type="button">+ Aufgabe</button>
+        </div>
+        <input id="importFileInput" type="file" accept="application/json" class="hidden">
+      </header>
+
+      <section class="toolbar" aria-label="Ansicht und Filter">
+      <div class="toolbar-switches">
+        <button id="viewPanelToggleBtn" class="toolbar-icon-btn" type="button" aria-label="Ansichten anzeigen" aria-expanded="false" title="Ansichten">
+          <svg class="toolbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M1.5 12S5.5 5.5 12 5.5 22.5 12 22.5 12 18.5 18.5 12 18.5 1.5 12 1.5 12z"></path>
+            <circle cx="12" cy="12" r="3.25"></circle>
+          </svg>
+        </button>
+        <button id="filterPanelToggleBtn" class="toolbar-icon-btn" type="button" aria-label="Filter anzeigen" aria-expanded="false" title="Filter">
+          <svg class="toolbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 5h18l-7 8v5l-4 2v-7z"></path>
+          </svg>
+        </button>
+        <button id="searchPanelToggleBtn" class="toolbar-icon-btn" type="button" aria-label="Suche anzeigen" aria-expanded="false" title="Suche">
+          <svg class="toolbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="6.5"></circle>
+            <line x1="16" y1="16" x2="21" y2="21"></line>
+          </svg>
+        </button>
+        <button id="clearFilterBtn" class="ghost-btn toolbar-clear-btn" type="button">Filter löschen</button>
+      </div>
+
+      <div id="toolbarPanelStage" class="toolbar-panel-stage hidden">
+        <div id="viewPanel" class="toolbar-panel hidden">
+          <div class="view-toggle" role="tablist" aria-label="Ansicht wechseln">
+            <button id="dashboardViewBtn" class="toggle-btn" type="button">Dashboard</button>
+            <button id="kanbanViewBtn" class="toggle-btn is-active" type="button">Kanban</button>
+            <button id="listViewBtn" class="toggle-btn" type="button">Liste</button>
+            <button id="archiveViewBtn" class="toggle-btn" type="button">Archiv</button>
+            <button id="trashViewBtn" class="toggle-btn" type="button">Papierkorb</button>
+          </div>
+        </div>
+
+        <div id="filterPanel" class="toolbar-panel hidden">
+          <div class="filter-controls">
+            <label for="dateFilterType">Filtern nach</label>
+            <select id="dateFilterType">
+              <option value="none" disabled selected>ohne</option>
+              <optgroup label="Schnellfilter Fälligkeit">
+                <option value="overdue">Überfällig</option>
+                <option value="today-due">Heute fällig</option>
+                <option value="tomorrow">Morgen fällig</option>
+                <option value="next-week">Nächste Woche fällig</option>
+              </optgroup>
+              <optgroup label="Datumsbereich (Von/Bis)">
+                <option value="due">Fälligkeitsdatum</option>
+                <option value="created">Erfassungsdatum</option>
+                <option value="completed">Erledigungsdatum</option>
+              </optgroup>
+            </select>
+
+            <label for="dateFrom">Von</label>
+            <input id="dateFrom" type="date">
+
+            <label for="dateTo">Bis</label>
+            <input id="dateTo" type="date">
+
+          </div>
+        </div>
+
+        <div id="searchPanel" class="toolbar-panel hidden">
+          <div id="searchWrap" class="search-wrap">
+            <input id="taskSearchInput" type="search" placeholder="Suchbegriff">
+          </div>
+        </div>
+      </div>
+      </section>
+    </div>
+
+    <section id="dashboardView" class="dashboard-view hidden" aria-label="Dashboard">
+      <div class="dashboard-grid">
+        <article class="dashboard-panel">
+          <header class="dashboard-panel-header">
+            <h2>Heute im Fokus</h2>
+            <span id="dashboardTodayCount" class="count">0</span>
+          </header>
+          <div id="dashboardTodayList" class="dashboard-task-list"></div>
+        </article>
+
+        <article class="dashboard-panel">
+          <header class="dashboard-panel-header">
+            <h2>Überfällig</h2>
+            <span id="dashboardOverdueCount" class="count">0</span>
+          </header>
+          <div id="dashboardOverdueList" class="dashboard-task-list"></div>
+        </article>
+
+        <article class="dashboard-panel">
+          <header class="dashboard-panel-header">
+            <h2>Diese Woche</h2>
+            <span id="dashboardWeekCount" class="count">0</span>
+          </header>
+          <div id="dashboardWeekList" class="dashboard-task-list"></div>
+        </article>
+
+        <article class="dashboard-panel">
+          <header class="dashboard-panel-header">
+            <h2>Zuletzt erledigt</h2>
+            <span id="dashboardDoneCount" class="count">0</span>
+          </header>
+          <div id="dashboardDoneList" class="dashboard-task-list"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="kanbanView" class="board" aria-label="Kanban Board">
+      <article class="column">
+        <header class="column-header">
+          <h2>Open</h2>
+          <span id="count-backlog" class="count">0</span>
+        </header>
+        <div class="dropzone" data-dropzone="backlog" aria-label="Open"></div>
+      </article>
+
+      <article class="column">
+        <header class="column-header">
+          <h2>Focus</h2>
+          <span id="count-todo" class="count">0</span>
+        </header>
+        <div class="dropzone" data-dropzone="todo" aria-label="Focus"></div>
+      </article>
+
+      <article class="column">
+        <header class="column-header">
+          <h2>Done</h2>
+          <span id="count-done" class="count">0</span>
+        </header>
+        <div class="dropzone" data-dropzone="done" aria-label="Done"></div>
+      </article>
+    </section>
+
+    <section id="listView" class="list-view hidden" aria-label="Listenansicht">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th id="listTitleHeader" aria-sort="none">
+                <button id="sortTitleBtn" class="sort-header-btn" type="button" data-sort="none">
+                  <span>Titel</span>
+                  <span class="sort-icon" aria-hidden="true"></span>
+                </button>
+              </th>
+              <th>Priorität</th>
+              <th>Tags</th>
+              <th>Beschreibung</th>
+              <th id="listStatusHeader">
+                <div class="status-filter">
+                  <button
+                    id="statusFilterBtn"
+                    class="status-filter-btn"
+                    type="button"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <span>Status</span>
+                    <span class="status-filter-icon" aria-hidden="true">▾</span>
+                  </button>
+                  <div id="statusFilterMenu" class="status-filter-menu hidden" role="menu" aria-label="Statusfilter">
+                    <label class="status-filter-option">
+                      <input type="checkbox" class="status-filter-checkbox" data-status="backlog" checked>
+                      <span>Open</span>
+                    </label>
+                    <label class="status-filter-option">
+                      <input type="checkbox" class="status-filter-checkbox" data-status="todo" checked>
+                      <span>Focus</span>
+                    </label>
+                    <label class="status-filter-option">
+                      <input type="checkbox" class="status-filter-checkbox" data-status="done" checked>
+                      <span>Done</span>
+                    </label>
+                  </div>
+                </div>
+              </th>
+              <th id="listDueHeader" aria-sort="none">
+                <button id="sortDueBtn" class="sort-header-btn" type="button" data-sort="none">
+                  <span>Fällig</span>
+                  <span class="sort-icon" aria-hidden="true"></span>
+                </button>
+              </th>
+              <th id="listCreatedHeader" aria-sort="descending">
+                <button id="sortCreatedBtn" class="sort-header-btn" type="button" data-sort="desc">
+                  <span>Erfasst</span>
+                  <span class="sort-icon" aria-hidden="true"></span>
+                </button>
+              </th>
+              <th>Erledigt</th>
+              <th>Fortschritt</th>
+              <th>Aktionen</th>
+            </tr>
+          </thead>
+          <tbody id="listTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="trashView" class="list-view hidden" aria-label="Papierkorb">
+      <div class="trash-actions">
+        <button id="emptyTrashBtn" class="danger-btn" type="button">Papierkorb leeren</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Titel</th>
+              <th>Status</th>
+              <th>Gelöscht am</th>
+              <th>Aktionen</th>
+            </tr>
+          </thead>
+          <tbody id="trashTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="archiveView" class="list-view hidden" aria-label="Archiv">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Titel</th>
+              <th>Priorität</th>
+              <th>Tags</th>
+              <th>Status</th>
+              <th>Archiviert am</th>
+              <th>Aktionen</th>
+            </tr>
+          </thead>
+          <tbody id="archiveTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="taskDialog">
+    <form id="taskForm" method="dialog" class="task-form">
+      <div class="task-dialog-header">
+        <div>
+          <h3 id="dialogTitle">Aufgabe erfassen</h3>
+          <p class="task-dialog-subtitle">Erfasse zuerst das Wesentliche. Weitere Details kannst du bei Bedarf ergänzen.</p>
+        </div>
+      </div>
+
+      <input type="hidden" id="taskId">
+
+      <section class="task-form-section task-form-section-main" data-section="title">
+        <div class="section-heading">
+          <label class="section-title" for="taskTitle">Titel</label>
+        </div>
+        <div class="section-content" data-section-content="title">
+          <input id="taskTitle" name="title" type="text" maxlength="120" placeholder="Worum geht es?">
+        </div>
+      </section>
+
+      <section class="task-form-section task-form-section-main" data-section="description">
+        <div class="section-heading">
+          <label class="section-title" for="taskDescription">Beschreibung</label>
+          <p class="section-hint">Optional. Halte nur den nötigen Kontext fest.</p>
+        </div>
+        <div class="section-content" data-section-content="description">
+          <textarea id="taskDescription" name="description" rows="3" maxlength="500" placeholder="Mehr Kontext, falls nötig"></textarea>
+        </div>
+      </section>
+
+      <section class="task-form-card task-form-plan-card">
+        <div class="section-heading">
+          <h4 class="section-title">Planung</h4>
+          <p class="section-hint">Fälligkeit, Priorität und Status gehören zusammen.</p>
+        </div>
+        <div class="planning-grid">
+          <div class="planning-field planning-field-due">
+            <label for="taskDueDateDate">Fälligkeit</label>
+            <div class="due-quick-actions">
+              <button type="button" class="due-quick-btn" data-due-quick="today">Heute</button>
+              <button type="button" class="due-quick-btn" data-due-quick="tomorrow">Morgen</button>
+              <button type="button" class="due-quick-btn" data-due-quick="next-week">Nächste Woche</button>
+              <button type="button" class="due-quick-btn" data-due-quick="clear">Ohne</button>
+            </div>
+            <div class="due-picker-grid">
+              <input id="taskDueDateDate" type="date" lang="de-CH">
+              <select id="taskDueDateHour" aria-label="Stunde">
+                <option value="">Std</option>
+              </select>
+              <select id="taskDueDateMinute" aria-label="Minuten">
+                <option value="">Min</option>
+                <option value="00">00</option>
+                <option value="15">15</option>
+                <option value="30">30</option>
+                <option value="45">45</option>
+              </select>
+            </div>
+            <input id="taskDueDate" name="dueDate" type="hidden">
+            <p id="taskDueDatePreview" class="datetime-preview">Format: 16.02.2026, 18:00 Uhr (15-Minuten-Schritte)</p>
+          </div>
+
+          <div class="planning-field">
+            <label for="taskPriority">Priorität</label>
+            <select id="taskPriority" name="priority">
+              <option value="high">Hoch</option>
+              <option value="medium" selected>Mittel</option>
+              <option value="low">Niedrig</option>
+            </select>
+          </div>
+
+          <div class="planning-field">
+            <label for="taskStatus">Status</label>
+            <select id="taskStatus" name="status">
+              <option value="backlog">Open</option>
+              <option value="todo">Focus</option>
+              <option value="done">Done</option>
+            </select>
+          </div>
+
+          <div class="planning-field planning-field-tags">
+            <label for="taskTags">Tags</label>
+            <p class="section-hint">Mit Komma trennen, z. B. Arbeit, Privat, Einkauf</p>
+            <input id="taskTags" name="tags" type="text" maxlength="160" placeholder="Arbeit, Privat, Einkauf">
+          </div>
+
+          <div class="planning-field planning-field-recurring">
+            <label for="taskRecurringFrequency">Wiederholung</label>
+            <p class="section-hint">Erzeugt nach Abschluss automatisch die nächste Aufgabe.</p>
+            <div class="recurring-grid">
+              <select id="taskRecurringFrequency" name="recurringFrequency">
+                <option value="none" selected>Keine Wiederholung</option>
+                <option value="daily">Täglich</option>
+                <option value="weekly">Wöchentlich</option>
+                <option value="monthly">Monatlich</option>
+                <option value="after-completion">X Tage nach Erledigung</option>
+              </select>
+              <input id="taskRecurringInterval" name="recurringInterval" type="number" min="1" max="365" value="1" aria-label="Intervall" disabled>
+            </div>
+            <p id="taskRecurringPreview" class="datetime-preview">Keine Wiederholung aktiv.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="task-form-section" data-section="checklist">
+        <button type="button" class="section-toggle" data-section-toggle="checklist" aria-expanded="true">Checkliste</button>
+        <div class="section-content" data-section-content="checklist">
+          <div class="checklist-add-row">
+            <input id="checklistQuickInput" type="text" maxlength="160" placeholder="Unteraufgabe hinzufügen und Enter drücken">
+            <button id="addChecklistItemBtn" type="button" class="checklist-add-btn" aria-label="Neuen Checklisten-Eintrag hinzufügen">+</button>
+          </div>
+          <ul id="checklistEditorList" class="checklist-editor-list"></ul>
+        </div>
+      </section>
+
+      <section class="task-form-section" data-section="image">
+        <button type="button" class="section-toggle" data-section-toggle="image" aria-expanded="true">Bild</button>
+        <div class="section-content" data-section-content="image">
+          <div class="image-toolbar">
+            <input id="taskImage" type="file" accept="image/*">
+            <label class="image-remove-toggle">
+              <input id="taskImageRemove" type="checkbox">
+              <span>Bild entfernen</span>
+            </label>
+          </div>
+          <div id="taskImagePreviewWrap" class="task-image-preview-wrap hidden" aria-live="polite">
+            <img id="taskImagePreview" class="task-image-preview" alt="Bildvorschau">
+          </div>
+          <details id="taskImageAdjustments" class="image-adjustments hidden">
+            <summary>Bildausschnitt anpassen</summary>
+            <div id="taskImageCropControls" class="image-crop-controls">
+              <label for="taskImagePosX">Ausschnitt horizontal</label>
+              <input id="taskImagePosX" type="range" min="0" max="100" value="50">
+              <label for="taskImagePosY">Ausschnitt vertikal</label>
+              <input id="taskImagePosY" type="range" min="0" max="100" value="50">
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <div class="form-actions">
+        <button id="cancelBtn" type="button" class="ghost-btn">Abbrechen</button>
+        <button type="submit" class="primary-btn">Speichern</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="wipeDialog">
+    <form method="dialog" class="wipe-dialog-content">
+      <h3 id="wipeDialogTitle">Alles endgültig löschen?</h3>
+      <p id="wipeDialogText">
+        Wirklich alle Aufgaben, Archiv-Inhalte, Papierkorb-Inhalte und Bilder endgültig löschen? Wichtig, wenn kein Export
+        erstellt wurde vor dem Löschen sind anschliessend sämtliche Aufgaben unwiederbringlich gelöscht.
+      </p>
+      <div class="form-actions">
+        <button id="wipeCancelBtn" type="button" class="ghost-btn">Abbrechen</button>
+        <button id="wipeConfirmBtn" type="button" class="danger-btn">Verstanden</button>
+      </div>
+    </form>
+  </dialog>
+
+  <template id="taskCardTemplate">
+    <article class="task-card" draggable="true">
+      <div class="task-image-wrap hidden">
+        <img class="task-image" alt="Aufgabenbild" loading="lazy">
+      </div>
+      <div class="task-meta">
+        <span class="task-priority-badge"></span>
+        <div class="task-tag-list"></div>
+      </div>
+      <h3 class="task-title"></h3>
+      <p class="task-description"></p>
+      <p class="task-checklist-progress"></p>
+      <ul class="task-checklist"></ul>
+      <p class="task-due-date"></p>
+      <div class="card-actions">
+        <button class="edit-btn card-primary-action" type="button">Bearbeiten</button>
+        <div class="card-icon-actions">
+          <button class="duplicate-btn card-icon-btn" type="button" aria-label="Duplizieren" title="Duplizieren">
+            <svg class="card-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="9" y="9" width="10" height="10" rx="2"></rect>
+              <rect x="5" y="5" width="10" height="10" rx="2"></rect>
+            </svg>
+          </button>
+          <button class="archive-btn card-icon-btn" type="button" aria-label="Archivieren" title="Archivieren">
+            <svg class="card-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16"></path>
+              <path d="M6 7v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7"></path>
+              <path d="M9 11h6"></path>
+              <path d="M5 4h14v3H5z"></path>
+            </svg>
+          </button>
+          <button class="delete-btn danger-btn card-icon-btn" type="button" aria-label="Löschen" title="Löschen">
+            <svg class="card-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16"></path>
+              <path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
+              <path d="M7 7l1 12h8l1-12"></path>
+              <path d="M10 11v5"></path>
+              <path d="M14 11v5"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
+
+
