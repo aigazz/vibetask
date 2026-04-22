@@ -229,6 +229,20 @@ body {
   border-radius: 10px;
 }
 
+.toolbar-icon-btn-labeled {
+  width: auto;
+  min-width: 40px;
+  gap: 8px;
+  padding: 0 12px;
+}
+
+.toolbar-btn-label {
+  display: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
 .toolbar-icon-btn.is-active {
   background: var(--accent-soft);
   border-color: var(--accent);
@@ -1408,5 +1422,296 @@ textarea::placeholder {
 
   .recurring-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .app {
+    padding: 12px 12px 24px;
+  }
+
+  .app-sticky-head {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    margin: 0 -12px 10px;
+    padding: max(8px, env(safe-area-inset-top)) 12px 8px;
+    background: color-mix(in srgb, var(--bg-neutral) 88%, transparent);
+    backdrop-filter: blur(12px);
+  }
+
+  .app-header {
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .app-header h1 {
+    font-size: 1.08rem;
+    line-height: 1.2;
+  }
+
+  .app-actions-wrap {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 8px;
+    align-items: stretch;
+  }
+
+  #newTaskBtn {
+    min-height: 44px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .settings-menu {
+    min-width: 0;
+  }
+
+  .settings-menu-panel {
+    right: 0;
+    left: auto;
+    width: min(86vw, 260px);
+  }
+
+  .settings-item-btn,
+  .theme-toggle-btn {
+    min-height: 44px;
+  }
+
+  .toolbar {
+    gap: 10px;
+    margin-bottom: 6px;
+    padding: 10px;
+    border-radius: 16px;
+  }
+
+  .toolbar-switches {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    align-items: stretch;
+  }
+
+  .toolbar-icon-btn {
+    width: 100%;
+    height: auto;
+    min-height: 48px;
+    border-radius: 12px;
+  }
+
+  .toolbar-icon-btn-labeled {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 6px;
+    padding: 8px 6px;
+  }
+
+  .toolbar-btn-label {
+    display: block;
+  }
+
+  .toolbar-clear-btn {
+    min-height: 48px;
+    margin-left: 0;
+    padding: 8px 6px;
+    font-size: 0.78rem;
+    line-height: 1.15;
+    white-space: normal;
+  }
+
+  .toolbar-panel-stage {
+    padding: 10px;
+    border-radius: 14px;
+  }
+
+  .toolbar-panel {
+    width: 100%;
+  }
+
+  .view-toggle {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    overflow: visible;
+    gap: 1px;
+    padding: 1px;
+    background: var(--line);
+    border-radius: 12px;
+    box-shadow: none;
+  }
+
+  .toggle-btn {
+    border: none;
+    min-height: 44px;
+    border-radius: 11px;
+    padding: 9px 10px;
+  }
+
+  .filter-controls {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .filter-controls label {
+    font-size: 0.86rem;
+  }
+
+  .filter-controls input,
+  .filter-controls select,
+  .search-wrap input {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    font-size: 16px;
+  }
+
+  #dateFilterType,
+  #dateFrom,
+  #dateTo {
+    min-width: 0;
+  }
+
+  #taskDialog {
+    width: 100vw;
+    max-width: none;
+    min-height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .task-form {
+    min-height: 100dvh;
+    gap: 12px;
+    padding: max(14px, env(safe-area-inset-top)) 14px calc(18px + env(safe-area-inset-bottom));
+    align-content: start;
+    overscroll-behavior: contain;
+  }
+
+  .task-dialog-header {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    margin: -14px -14px 0;
+    padding: 14px 14px 10px;
+    background: linear-gradient(180deg, var(--surface) 82%, rgba(255, 255, 255, 0));
+  }
+
+  :root[data-theme="dark"] .task-dialog-header {
+    background: linear-gradient(180deg, var(--surface) 82%, rgba(35, 43, 53, 0));
+  }
+
+  .task-dialog-subtitle {
+    font-size: 0.88rem;
+  }
+
+  .task-form-card,
+  .task-form-section {
+    gap: 12px;
+    padding: 12px;
+    border-radius: 16px;
+  }
+
+  .task-form input,
+  .task-form textarea,
+  .task-form select,
+  .form-actions button,
+  .checklist-add-btn {
+    min-height: 48px;
+    font-size: 16px;
+  }
+
+  #taskDescription {
+    min-height: 120px;
+  }
+
+  .task-form label,
+  .section-hint,
+  .datetime-preview,
+  .image-remove-toggle,
+  .image-crop-controls label,
+  .checklist-editor-empty {
+    font-size: 0.9rem;
+  }
+
+  .due-quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .due-quick-btn {
+    width: 100%;
+    min-height: 42px;
+    padding: 8px 10px;
+  }
+
+  .due-picker-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #taskDueDateDate {
+    grid-column: 1 / -1;
+  }
+
+  .checklist-add-row,
+  .image-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .image-toolbar {
+    display: grid;
+    align-items: stretch;
+  }
+
+  .image-toolbar > * {
+    width: 100%;
+  }
+
+  .image-remove-toggle {
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface-alt);
+  }
+
+  .checklist-editor-item {
+    grid-template-columns: 40px 28px minmax(0, 1fr) 40px;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .checklist-drag-handle {
+    min-width: 36px;
+    min-height: 40px;
+  }
+
+  .checklist-editor-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+  }
+
+  .checklist-editor-item input[type="text"] {
+    min-height: 44px;
+  }
+
+  .checklist-remove-btn {
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .form-actions {
+    justify-content: stretch;
+    gap: 10px;
+    margin: 0;
+    padding: 12px 0 calc(env(safe-area-inset-bottom) + 4px);
+  }
+
+  .form-actions button {
+    flex: 1 1 0;
   }
 }

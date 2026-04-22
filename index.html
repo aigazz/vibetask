@@ -13,11 +13,12 @@
         <h1>Aufgabenliste</h1>
         <div class="app-actions-wrap">
           <div class="settings-menu">
-            <button id="settingsToggleBtn" class="toolbar-icon-btn" type="button" aria-label="Einstellungen öffnen" aria-expanded="false" title="Einstellungen">
+            <button id="settingsToggleBtn" class="toolbar-icon-btn toolbar-icon-btn-labeled" type="button" aria-label="Einstellungen öffnen" aria-expanded="false" title="Einstellungen">
               <svg class="toolbar-icon" viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="12" r="3.1"></circle>
                 <path d="M19.3 15a1 1 0 0 0 .2 1.1l.1.1a1.2 1.2 0 0 1 0 1.7l-1.1 1.1a1.2 1.2 0 0 1-1.7 0l-.1-.1a1 1 0 0 0-1.1-.2 1 1 0 0 0-.6.9V20a1.2 1.2 0 0 1-1.2 1.2h-1.6A1.2 1.2 0 0 1 11 20v-.1a1 1 0 0 0-.6-.9 1 1 0 0 0-1.1.2l-.1.1a1.2 1.2 0 0 1-1.7 0l-1.1-1.1a1.2 1.2 0 0 1 0-1.7l.1-.1a1 1 0 0 0 .2-1.1 1 1 0 0 0-.9-.6H4A1.2 1.2 0 0 1 2.8 13v-1.6A1.2 1.2 0 0 1 4 10.2h.1a1 1 0 0 0 .9-.6 1 1 0 0 0-.2-1.1l-.1-.1a1.2 1.2 0 0 1 0-1.7l1.1-1.1a1.2 1.2 0 0 1 1.7 0l.1.1a1 1 0 0 0 1.1.2 1 1 0 0 0 .6-.9V4A1.2 1.2 0 0 1 11.4 2.8H13A1.2 1.2 0 0 1 14.2 4v.1a1 1 0 0 0 .6.9 1 1 0 0 0 1.1-.2l.1-.1a1.2 1.2 0 0 1 1.7 0l1.1 1.1a1.2 1.2 0 0 1 0 1.7l-.1.1a1 1 0 0 0-.2 1.1 1 1 0 0 0 .9.6H20a1.2 1.2 0 0 1 1.2 1.2V13A1.2 1.2 0 0 1 20 14.2h-.1a1 1 0 0 0-.6.8z"></path>
               </svg>
+              <span class="toolbar-btn-label">Mehr</span>
             </button>
             <div id="settingsMenuPanel" class="settings-menu-panel hidden">
               <button id="themeToggle" class="theme-toggle-btn settings-item-btn" type="button" aria-label="Dark-Modus aktivieren" aria-pressed="false" title="Dark-Modus aktivieren">
@@ -36,22 +37,25 @@
 
       <section class="toolbar" aria-label="Ansicht und Filter">
       <div class="toolbar-switches">
-        <button id="viewPanelToggleBtn" class="toolbar-icon-btn" type="button" aria-label="Ansichten anzeigen" aria-expanded="false" title="Ansichten">
+        <button id="viewPanelToggleBtn" class="toolbar-icon-btn toolbar-icon-btn-labeled" type="button" aria-label="Ansichten anzeigen" aria-expanded="false" title="Ansichten">
           <svg class="toolbar-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M1.5 12S5.5 5.5 12 5.5 22.5 12 22.5 12 18.5 18.5 12 18.5 1.5 12 1.5 12z"></path>
             <circle cx="12" cy="12" r="3.25"></circle>
           </svg>
+          <span class="toolbar-btn-label">Ansicht</span>
         </button>
-        <button id="filterPanelToggleBtn" class="toolbar-icon-btn" type="button" aria-label="Filter anzeigen" aria-expanded="false" title="Filter">
+        <button id="filterPanelToggleBtn" class="toolbar-icon-btn toolbar-icon-btn-labeled" type="button" aria-label="Filter anzeigen" aria-expanded="false" title="Filter">
           <svg class="toolbar-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M3 5h18l-7 8v5l-4 2v-7z"></path>
           </svg>
+          <span class="toolbar-btn-label">Filter</span>
         </button>
-        <button id="searchPanelToggleBtn" class="toolbar-icon-btn" type="button" aria-label="Suche anzeigen" aria-expanded="false" title="Suche">
+        <button id="searchPanelToggleBtn" class="toolbar-icon-btn toolbar-icon-btn-labeled" type="button" aria-label="Suche anzeigen" aria-expanded="false" title="Suche">
           <svg class="toolbar-icon" viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="11" cy="11" r="6.5"></circle>
             <line x1="16" y1="16" x2="21" y2="21"></line>
           </svg>
+          <span class="toolbar-btn-label">Suche</span>
         </button>
         <button id="clearFilterBtn" class="ghost-btn toolbar-clear-btn" type="button">Filter löschen</button>
       </div>
@@ -283,7 +287,7 @@
           <label class="section-title" for="taskTitle">Titel</label>
         </div>
         <div class="section-content" data-section-content="title">
-          <input id="taskTitle" name="title" type="text" maxlength="120" placeholder="Worum geht es?">
+          <input id="taskTitle" name="title" type="text" maxlength="120" placeholder="Worum geht es?" autocapitalize="sentences" enterkeyhint="next">
         </div>
       </section>
 
@@ -293,7 +297,7 @@
           <p class="section-hint">Optional. Halte nur den nötigen Kontext fest.</p>
         </div>
         <div class="section-content" data-section-content="description">
-          <textarea id="taskDescription" name="description" rows="3" maxlength="500" placeholder="Mehr Kontext, falls nötig"></textarea>
+          <textarea id="taskDescription" name="description" rows="3" maxlength="500" placeholder="Mehr Kontext, falls nötig" autocapitalize="sentences" enterkeyhint="next"></textarea>
         </div>
       </section>
 
@@ -349,7 +353,7 @@
           <div class="planning-field planning-field-tags">
             <label for="taskTags">Tags</label>
             <p class="section-hint">Mit Komma trennen, z. B. Arbeit, Privat, Einkauf</p>
-            <input id="taskTags" name="tags" type="text" maxlength="160" placeholder="Arbeit, Privat, Einkauf">
+            <input id="taskTags" name="tags" type="text" maxlength="160" placeholder="Arbeit, Privat, Einkauf" autocapitalize="words" enterkeyhint="next">
           </div>
 
           <div class="planning-field planning-field-recurring">
@@ -374,7 +378,7 @@
         <button type="button" class="section-toggle" data-section-toggle="checklist" aria-expanded="true">Checkliste</button>
         <div class="section-content" data-section-content="checklist">
           <div class="checklist-add-row">
-            <input id="checklistQuickInput" type="text" maxlength="160" placeholder="Unteraufgabe hinzufügen und Enter drücken">
+            <input id="checklistQuickInput" type="text" maxlength="160" placeholder="Unteraufgabe hinzufügen und Enter drücken" autocapitalize="sentences" enterkeyhint="done">
             <button id="addChecklistItemBtn" type="button" class="checklist-add-btn" aria-label="Neuen Checklisten-Eintrag hinzufügen">+</button>
           </div>
           <ul id="checklistEditorList" class="checklist-editor-list"></ul>

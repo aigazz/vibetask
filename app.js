@@ -2122,6 +2122,7 @@ function setView(view) {
     view === "dashboard" || view === "list" || view === "archive" || view === "trash" ? view : "kanban";
   saveViewPreference();
   updateViewUI();
+  closeToolbarPanelOnMobile();
 }
 
 function onFilterChange() {
@@ -2154,6 +2155,14 @@ function onFilterChange() {
   state.dateFrom = dateFromInput.value;
   state.dateTo = dateToInput.value;
   renderApp();
+  if (selectedType !== "due" && selectedType !== "created" && selectedType !== "completed") {
+    closeToolbarPanelOnMobile();
+  }
+}
+
+function closeToolbarPanelOnMobile() {
+  if (typeof window === "undefined" || !window.matchMedia("(max-width: 640px)").matches) return;
+  setToolbarPanel(null);
 }
 
 function setToolbarPanel(panelName) {
